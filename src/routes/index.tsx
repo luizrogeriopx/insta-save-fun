@@ -220,7 +220,7 @@ function Home() {
           <div className="flex flex-col items-center gap-3 text-center">
             <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
               <Heart className="h-4 w-4 text-primary" />
-              Não tem Propagandas, considere fazer uma doação!
+              Gratuito, sem cadastro e sem propagandas! Considere fazer uma doação
             </div>
             <div className="rounded-xl bg-white p-3">
               <img
