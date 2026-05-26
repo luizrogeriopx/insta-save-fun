@@ -38,6 +38,18 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ResolveData | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopyPix() {
+    try {
+      await navigator.clipboard.writeText(PIX_KEY);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  }
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
