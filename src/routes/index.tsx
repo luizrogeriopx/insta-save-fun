@@ -39,6 +39,7 @@ function Home() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ResolveData | null>(null);
   const [copied, setCopied] = useState(false);
+  const [captionCopied, setCaptionCopied] = useState(false);
 
   async function handleCopyPix() {
     try {
@@ -47,6 +48,17 @@ function Home() {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
+    }
+  }
+
+  async function handleCopyCaption() {
+    if (!result?.caption) return;
+    try {
+      await navigator.clipboard.writeText(result.caption);
+      setCaptionCopied(true);
+      setTimeout(() => setCaptionCopied(false), 2000);
+    } catch {
+      setCaptionCopied(false);
     }
   }
 
@@ -165,8 +177,32 @@ function Home() {
               </div>
             )}
             <div className="space-y-4 p-5">
+              {result.author && (
+                <p className="text-sm font-semibold text-foreground">@{result.author}</p>
+              )}
               {result.caption && (
-                <p className="line-clamp-3 text-sm text-muted-foreground">{result.caption}</p>
+                <div className="space-y-2">
+                  <p className="whitespace-pre-wrap text-sm text-muted-foreground">
+                    {result.caption}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleCopyCaption}
+                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+                  >
+                    {captionCopied ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-primary" />
+                        Legenda copiada
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-3.5 w-3.5" />
+                        Copiar legenda
+                      </>
+                    )}
+                  </button>
+                </div>
               )}
               <a
                 href={downloadHref}
