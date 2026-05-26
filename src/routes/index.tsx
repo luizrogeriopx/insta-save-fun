@@ -140,7 +140,7 @@ function Home() {
             {result.thumbnail && (
               <div className="aspect-video w-full overflow-hidden bg-muted">
                 <img
-                  src={result.thumbnail}
+                  src={`/api/thumb?u=${encodeURIComponent(result.thumbnail)}`}
                   alt={result.caption || "Prévia do vídeo do Instagram"}
                   className="h-full w-full object-cover"
                   referrerPolicy="no-referrer"
