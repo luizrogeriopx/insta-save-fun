@@ -154,16 +154,45 @@ function Home() {
 
         {result && (
           <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
-            {result.thumbnail && (
-              <div className="aspect-video w-full overflow-hidden bg-muted">
+            <div className="flex flex-col items-center gap-3 border-b border-border bg-muted/40 p-5">
+              <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                <Heart className="h-4 w-4 text-primary" />
+                Não tem propagandas, considere fazer uma doação!
+              </div>
+              <div className="rounded-xl bg-white p-3">
                 <img
-                  src={`/api/thumb?u=${encodeURIComponent(result.thumbnail)}`}
-                  alt={result.caption || "Prévia do vídeo do Instagram"}
-                  className="h-full w-full object-cover"
-                  referrerPolicy="no-referrer"
+                  src={pixQr}
+                  alt="QR Code PIX para doação"
+                  className="h-40 w-40 object-contain"
                 />
               </div>
-            )}
+              <div className="w-full">
+                <p className="mb-1 text-xs text-muted-foreground">PIX copia e cola</p>
+                <div className="flex items-stretch gap-2">
+                  <code className="flex-1 truncate rounded-lg bg-input/60 px-3 py-2 text-xs text-muted-foreground">
+                    {PIX_KEY}
+                  </code>
+                  <button
+                    type="button"
+                    onClick={handleCopyPix}
+                    className="inline-flex items-center gap-1 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-primary" />
+                        Copiado
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-3.5 w-3.5" />
+                        Copiar
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div className="space-y-4 p-5">
               {result.caption && (
                 <p className="line-clamp-3 text-sm text-muted-foreground">{result.caption}</p>
