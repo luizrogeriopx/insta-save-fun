@@ -72,14 +72,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "instavid" },
+      { name: "description", content: "Download Instagram videos easily by pasting the video link." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "instavid" },
+      { property: "og:description", content: "Download Instagram videos easily by pasting the video link." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "instavid" },
+      { name: "twitter:description", content: "Download Instagram videos easily by pasting the video link." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/23f27e2b-e4b4-48cd-8570-f7624921b6c6/id-preview-081e075b--fd2658c0-24b0-4b5c-9b27-465513c899bf.lovable.app-1779811936477.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/23f27e2b-e4b4-48cd-8570-f7624921b6c6/id-preview-081e075b--fd2658c0-24b0-4b5c-9b27-465513c899bf.lovable.app-1779811936477.png" },
     ],
     links: [
       {
