@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiResolveRouteImport } from './routes/api/resolve'
+import { Route as ApiDownloadRouteImport } from './routes/api/download'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const ApiResolveRoute = ApiResolveRouteImport.update({
   path: '/api/resolve',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiDownloadRoute = ApiDownloadRouteImport.update({
+  id: '/api/download',
+  path: '/api/download',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/download': typeof ApiDownloadRoute
   '/api/resolve': typeof ApiResolveRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/download': typeof ApiDownloadRoute
   '/api/resolve': typeof ApiResolveRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/download': typeof ApiDownloadRoute
   '/api/resolve': typeof ApiResolveRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/resolve'
+  fullPaths: '/' | '/api/download' | '/api/resolve'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/resolve'
-  id: '__root__' | '/' | '/api/resolve'
+  to: '/' | '/api/download' | '/api/resolve'
+  id: '__root__' | '/' | '/api/download' | '/api/resolve'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiDownloadRoute: typeof ApiDownloadRoute
   ApiResolveRoute: typeof ApiResolveRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiResolveRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/download': {
+      id: '/api/download'
+      path: '/api/download'
+      fullPath: '/api/download'
+      preLoaderRoute: typeof ApiDownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiDownloadRoute: ApiDownloadRoute,
   ApiResolveRoute: ApiResolveRoute,
 }
 export const routeTree = rootRouteImport
