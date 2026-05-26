@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const IG_URL_RE = /^https?:\/\/(www\.)?instagram\.com\/(reel|reels|p|tv|share)\/[A-Za-z0-9_\-]+/i;
+const IG_URL_RE = /^https?:\/\/(www\.)?instagram\.com\/(reel|reels|p|tv|share)\/[A-Za-z0-9_-]+/i;
 
 type ResolveResult = {
   videoUrl: string;
@@ -74,8 +74,7 @@ function extractFromHtml(html: string): ResolveResult | null {
   const thumbMatch =
     html.match(/<img[^>]+src="([^"]+)"/i) ||
     html.match(/"thumb(?:nail)?"\s*:\s*"([^"]+)"/i);
-  const captionMatch =
-    html.match(/<h3[^>]*>([^<]+)<\/h3>/i) || html.match(/<p[^>]*>([^<]{10,})<\/p>/i);
+  const captionMatch = html.match(/<h3[^>]*>([^<]+)<\/h3>/i) || html.match(/<p[^>]*>([^<]{10,})<\/p>/i);
   return {
     videoUrl,
     thumbnail: thumbMatch ? decodeHtml(thumbMatch[1]).replace(/\\\//g, "/") : undefined,
@@ -93,10 +92,14 @@ function mediaToResult(media: InstagramGraphqlMedia): ResolveResult | null {
   const caption = media.edge_media_to_caption?.edges?.[0]?.node?.text;
   return {
     videoUrl: decodeHtml(source.video_url).replace(/\\\//g, "/"),
-    thumbnail: decodeHtml(source.thumbnail_src || source.display_url || media.thumbnail_src || media.display_url || "").replace(
-      /\\\//g,
-      "/",
-    ) || undefined,
+    thumbnail:
+      decodeHtml(
+        source.thumbnail_src ||
+          source.display_url ||
+          media.thumbnail_src ||
+          media.display_url ||
+          "",
+      ).replace(/\\\//g, "/") || undefined,
     author: media.owner?.username || media.owner?.full_name,
     caption: caption ? decodeHtml(caption).trim() : undefined,
   };
