@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Download, Link2, Loader2, AlertCircle, Sparkles } from "lucide-react";
+import { Download, Link2, Loader2, AlertCircle, Sparkles, Copy, Check, Heart } from "lucide-react";
+import pixQr from "@/assets/pix-qr.png";
+
+const PIX_KEY =
+  "00020126560014BR.GOV.BCB.PIX0114582083280001880216Doacao InstaSave5204000053039865802BR592558.208.328 LUIZ ROGERIO R6010GOIANIA GO62130509InstaSave63045B78";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
