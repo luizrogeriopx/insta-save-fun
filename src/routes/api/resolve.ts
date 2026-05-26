@@ -106,12 +106,13 @@ async function viaInstagramGraphql(url: string): Promise<ResolveResult> {
   const shortcode = await resolveShortcode(url);
   if (!shortcode) throw new Error("instagram shortcode");
 
-  const graphql = new URL("https://www.instagram.com/api/graphql");
-  graphql.searchParams.set("variables", JSON.stringify({ shortcode }));
-  graphql.searchParams.set("doc_id", "10015901848480474");
-  graphql.searchParams.set("lsd", IG_LSD);
+  const body = new URLSearchParams({
+    variables: JSON.stringify({ shortcode }),
+    doc_id: "10015901848480474",
+    lsd: IG_LSD,
+  });
 
-  const res = await fetch(graphql.toString(), {
+  const res = await fetch("https://www.instagram.com/api/graphql", {
     method: "POST",
     headers: {
       "content-type": "application/x-www-form-urlencoded",
@@ -119,10 +120,12 @@ async function viaInstagramGraphql(url: string): Promise<ResolveResult> {
       "x-ig-app-id": IG_APP_ID,
       "x-fb-lsd": IG_LSD,
       "x-asbd-id": "129477",
+      "sec-fetch-site": "same-origin",
       origin: "https://www.instagram.com",
       referer: `https://www.instagram.com/reel/${shortcode}/`,
       accept: "application/json,text/javascript,*/*",
     },
+    body,
   });
   if (!res.ok) throw new Error(`instagram graphql ${res.status}`);
   const json = (await res.json()) as InstagramGraphqlResponse;
