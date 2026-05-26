@@ -71,10 +71,9 @@ function extractFromHtml(html: string): ResolveResult | null {
     html.match(/"(https?:\/\/[^"\\]+\.mp4[^"\\]*)"/i);
   if (!videoMatch) return null;
   const videoUrl = decodeHtml(videoMatch[1]).replace(/\\\//g, "/");
-  const thumbMatch =
-    html.match(/<img[^>]+src="([^"]+)"/i) ||
-    html.match(/"thumb(?:nail)?"\s*:\s*"([^"]+)"/i);
-  const captionMatch = html.match(/<h3[^>]*>([^<]+)<\/h3>/i) || html.match(/<p[^>]*>([^<]{10,})<\/p>/i);
+  const thumbMatch = html.match(/<img[^>]+src="([^"]+)"/i) || html.match(/"thumb(?:nail)?"\s*:\s*"([^"]+)"/i);
+  const captionMatch =
+    html.match(/<h3[^>]*>([^<]+)<\/h3>/i) || html.match(/<p[^>]*>([^<]{10,})<\/p>/i);
   return {
     videoUrl,
     thumbnail: thumbMatch ? decodeHtml(thumbMatch[1]).replace(/\\\//g, "/") : undefined,
