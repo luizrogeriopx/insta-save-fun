@@ -39,6 +39,7 @@ function Home() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ResolveData | null>(null);
   const [copied, setCopied] = useState(false);
+  const [captionCopied, setCaptionCopied] = useState(false);
 
   async function handleCopyPix() {
     try {
@@ -47,6 +48,17 @@ function Home() {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
+    }
+  }
+
+  async function handleCopyCaption() {
+    if (!result?.caption) return;
+    try {
+      await navigator.clipboard.writeText(result.caption);
+      setCaptionCopied(true);
+      setTimeout(() => setCaptionCopied(false), 2000);
+    } catch {
+      setCaptionCopied(false);
     }
   }
 
