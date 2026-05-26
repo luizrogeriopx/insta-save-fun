@@ -82,13 +82,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "instavid" },
       { name: "twitter:description", content: "Download Instagram videos easily by pasting the video link." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/23f27e2b-e4b4-48cd-8570-f7624921b6c6/id-preview-081e075b--fd2658c0-24b0-4b5c-9b27-465513c899bf.lovable.app-1779811936477.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/23f27e2b-e4b4-48cd-8570-f7624921b6c6/id-preview-081e075b--fd2658c0-24b0-4b5c-9b27-465513c899bf.lovable.app-1779811936477.png" },
+      { name: "theme-color", content: "#4f46e5" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "manifest",
+        href: "/manifest.json",
+      },
+      {
+        rel: "apple-touch-icon",
+        href: "/icon-192.png",
       },
     ],
   }),
@@ -100,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
