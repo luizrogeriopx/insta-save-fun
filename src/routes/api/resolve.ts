@@ -33,7 +33,8 @@ function extractShortcode(url: string) {
     const parts = parsed.pathname.split("/").filter(Boolean);
     const type = parts[0]?.toLowerCase();
     if (["reel", "reels", "p", "tv"].includes(type) && parts[1]) return parts[1];
-    if (type === "share" && ["reel", "reels", "p", "tv"].includes(parts[1]?.toLowerCase())) {
+    const sharedType = parts[1]?.toLowerCase();
+    if (type === "share" && sharedType && ["reel", "reels", "p", "tv"].includes(sharedType)) {
       return parts[2] || null;
     }
   } catch {
