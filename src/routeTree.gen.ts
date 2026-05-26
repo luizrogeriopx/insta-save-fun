@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiThumbRouteImport } from './routes/api/thumb'
 import { Route as ApiResolveRouteImport } from './routes/api/resolve'
 import { Route as ApiDownloadRouteImport } from './routes/api/download'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiThumbRoute = ApiThumbRouteImport.update({
+  id: '/api/thumb',
+  path: '/api/thumb',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiResolveRoute = ApiResolveRouteImport.update({
@@ -33,30 +39,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/download': typeof ApiDownloadRoute
   '/api/resolve': typeof ApiResolveRoute
+  '/api/thumb': typeof ApiThumbRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/download': typeof ApiDownloadRoute
   '/api/resolve': typeof ApiResolveRoute
+  '/api/thumb': typeof ApiThumbRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/download': typeof ApiDownloadRoute
   '/api/resolve': typeof ApiResolveRoute
+  '/api/thumb': typeof ApiThumbRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/download' | '/api/resolve'
+  fullPaths: '/' | '/api/download' | '/api/resolve' | '/api/thumb'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/download' | '/api/resolve'
-  id: '__root__' | '/' | '/api/download' | '/api/resolve'
+  to: '/' | '/api/download' | '/api/resolve' | '/api/thumb'
+  id: '__root__' | '/' | '/api/download' | '/api/resolve' | '/api/thumb'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiDownloadRoute: typeof ApiDownloadRoute
   ApiResolveRoute: typeof ApiResolveRoute
+  ApiThumbRoute: typeof ApiThumbRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/thumb': {
+      id: '/api/thumb'
+      path: '/api/thumb'
+      fullPath: '/api/thumb'
+      preLoaderRoute: typeof ApiThumbRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/resolve': {
@@ -89,7 +106,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiDownloadRoute: ApiDownloadRoute,
   ApiResolveRoute: ApiResolveRoute,
+  ApiThumbRoute: ApiThumbRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
