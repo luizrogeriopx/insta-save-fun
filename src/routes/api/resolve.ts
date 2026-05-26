@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const IG_URL_RE = /^https?:\/\/(www\.)?instagram\.com\/(reel|reels|p|tv|share)\/[A-Za-z0-9_\-]+/i;
+const IG_URL_RE = /^https?:\/\/(www\.)?instagram\.com\/(reel|reels|p|tv|share)\/[A-Za-z0-9_-]+/i;
 
 type ResolveResult = {
   videoUrl: string;
@@ -72,8 +72,7 @@ function extractFromHtml(html: string): ResolveResult | null {
   if (!videoMatch) return null;
   const videoUrl = decodeHtml(videoMatch[1]).replace(/\\\//g, "/");
   const thumbMatch =
-    html.match(/<img[^>]+src="([^"]+)"/i) ||
-    html.match(/"thumb(?:nail)?"\s*:\s*"([^"]+)"/i);
+    html.match(/<img[^>]+src="([^"]+)"/i) || html.match(/"thumb(?:nail)?"\s*:\s*"([^"]+)"/i);
   const captionMatch =
     html.match(/<h3[^>]*>([^<]+)<\/h3>/i) || html.match(/<p[^>]*>([^<]{10,})<\/p>/i);
   return {
@@ -93,10 +92,14 @@ function mediaToResult(media: InstagramGraphqlMedia): ResolveResult | null {
   const caption = media.edge_media_to_caption?.edges?.[0]?.node?.text;
   return {
     videoUrl: decodeHtml(source.video_url).replace(/\\\//g, "/"),
-    thumbnail: decodeHtml(source.thumbnail_src || source.display_url || media.thumbnail_src || media.display_url || "").replace(
-      /\\\//g,
-      "/",
-    ) || undefined,
+    thumbnail:
+      decodeHtml(
+        source.thumbnail_src ||
+          source.display_url ||
+          media.thumbnail_src ||
+          media.display_url ||
+          "",
+      ).replace(/\\\//g, "/") || undefined,
     author: media.owner?.username || media.owner?.full_name,
     caption: caption ? decodeHtml(caption).trim() : undefined,
   };
@@ -106,12 +109,13 @@ async function viaInstagramGraphql(url: string): Promise<ResolveResult> {
   const shortcode = await resolveShortcode(url);
   if (!shortcode) throw new Error("instagram shortcode");
 
-  const graphql = new URL("https://www.instagram.com/api/graphql");
-  graphql.searchParams.set("variables", JSON.stringify({ shortcode }));
-  graphql.searchParams.set("doc_id", "10015901848480474");
-  graphql.searchParams.set("lsd", IG_LSD);
+  const body = new URLSearchParams({
+    variables: JSON.stringify({ shortcode }),
+    doc_id: "10015901848480474",
+    lsd: IG_LSD,
+  });
 
-  const res = await fetch(graphql.toString(), {
+  const res = await fetch("https://www.instagram.com/api/graphql", {
     method: "POST",
     headers: {
       "content-type": "application/x-www-form-urlencoded",
@@ -119,10 +123,12 @@ async function viaInstagramGraphql(url: string): Promise<ResolveResult> {
       "x-ig-app-id": IG_APP_ID,
       "x-fb-lsd": IG_LSD,
       "x-asbd-id": "129477",
+      "sec-fetch-site": "same-origin",
       origin: "https://www.instagram.com",
       referer: `https://www.instagram.com/reel/${shortcode}/`,
       accept: "application/json,text/javascript,*/*",
     },
+    body,
   });
   if (!res.ok) throw new Error(`instagram graphql ${res.status}`);
   const json = (await res.json()) as InstagramGraphqlResponse;
