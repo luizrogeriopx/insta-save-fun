@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Download, Link2, Loader2, AlertCircle, Sparkles, Copy, Check, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Download, Link2, Loader2, AlertCircle, Sparkles, Copy, Check, Heart, Smartphone } from "lucide-react";
 import pixQr from "@/assets/pix-qr.png";
 
 const PIX_KEY =
