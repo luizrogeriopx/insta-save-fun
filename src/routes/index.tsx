@@ -128,6 +128,16 @@ function Home() {
       />
 
       <div className="relative mx-auto flex max-w-2xl flex-col px-6 pt-20 pb-16">
+        {!isInstalled && installPrompt && (
+          <button
+            type="button"
+            onClick={handleInstall}
+            className="absolute right-6 top-6 inline-flex items-center gap-1.5 rounded-full border border-border bg-card/80 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur transition-colors hover:bg-accent"
+          >
+            <Smartphone className="h-3.5 w-3.5 text-primary" />
+            Instalar app
+          </button>
+        )}
         <div className="mb-10 flex flex-col items-center text-center">
           <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
